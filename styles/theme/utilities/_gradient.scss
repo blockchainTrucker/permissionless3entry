@@ -1,0 +1,88 @@
+//Text Gradient
+.text-primary-gradient {
+    color: #dbc078;
+    background-image: -webkit-linear-gradient(
+        0deg,
+        #dbc078 27%,
+        #efde92 48%,
+        #dbc078 74%
+    );
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+// Background  Gradient
+
+// light gradient
+
+.bg-light-gradient {
+    background: rgba(221, 218, 255, 0.2);
+    background: linear-gradient(
+        180deg,
+        rgba(221, 218, 255, 0.2) 0%,
+        rgba(255, 255, 255, 0) 80%
+    );
+    background: -webkit-linear-gradient(
+        180deg,
+        rgba(221, 218, 255, 0.2) 0%,
+        rgba(255, 255, 255, 0) 80%
+    );
+    background: -moz-linear-gradient(
+        180deg,
+        rgba(221, 218, 255, 0.2) 0%,
+        rgba(255, 255, 255, 0) 80%
+    );
+}
+
+// light gradient bottom
+
+.bg-light-gradient-bottom {
+    background: rgba(221, 218, 255, 0.3);
+    background: linear-gradient(
+        360deg,
+        rgba(221, 218, 255, 0.3) 0%,
+        rgba(255, 255, 255, 0) 80%
+    );
+    background: -webkit-linear-gradient(
+        360deg,
+        rgba(221, 218, 255, 0.3) 0%,
+        rgba(255, 255, 255, 0) 80%
+    );
+    background: -moz-linear-gradient(
+        360deg,
+        rgba(221, 218, 255, 0.3) 0%,
+        rgba(255, 255, 255, 0) 80%
+    );
+}
+
+// light gradient top
+
+.bg-light-gradient-top {
+    background: rgba(221, 218, 255, 0.3);
+    background: linear-gradient(
+        180deg,
+        rgba(115, 93, 194, 0.5) 70%,
+        rgba(255, 255, 255, 0.5) 30%
+    );
+    background: -webkit-linear-gradient(
+        180deg,
+        rgba(115, 93, 194, 0.5) 70%,
+        rgba(255, 255, 255, 0.5) 30%
+    );
+    background: -moz-linear-gradient(
+        180deg,
+        rgba(115, 93, 194, 0.5) 70%,
+        rgba(255, 255, 255, 0.5) 30%
+    );
+}
+
+// bg mix gradient
+
+.bg-gradient-mix-shade {
+    background: linear-gradient(270.06deg, #a4a3d9 22%, #7ac08a 150%);
+}
+
+.gradient-bg {
+    background: linear-gradient(to right, #b98a47, #efde92, #b98a47);
+}
