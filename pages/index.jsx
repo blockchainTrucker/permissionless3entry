@@ -19,7 +19,7 @@ const Landing = () => {
                 </Row>
             </section>
             <section>
-                <div className="d-flex justify-content-center gap-8">
+                <Row className="d-flex justify-content-center gap-8">
                     <div style={{ width: '305px' }}>
                         <Link href="/virtual-therapist" className="text-center">
                             <Image
@@ -64,7 +64,7 @@ const Landing = () => {
                             </p>
                         </Link>
                     </div>
-                </div>
+                </Row>
             </section>
         </Fragment>
     );

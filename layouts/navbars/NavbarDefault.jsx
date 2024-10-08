@@ -1,24 +1,13 @@
-import { Fragment, useState, useEffect } from 'react';
+import { Fragment, useState } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
-import {
-    Image,
-    Navbar,
-    Nav,
-    Container,
-    Dropdown,
-    Col,
-    Modal,
-    Button,
-} from 'react-bootstrap';
+import { Image, Navbar, Nav, Container } from 'react-bootstrap';
 import NavDropdownMain from '../../sub-components/navbar/NavDropdownMain';
-import NavbarDefaultRoutes from '../../data/navbars/navbarRoutes.jsx';
+import NavbarDefaultRoutes from '../../data/navbars/navbarRoutes';
+import { useMindContext } from '../../context/MindContext';
 
 const NavbarDefault = () => {
-    const router = useRouter();
+    const { balance } = useMindContext();
     const [expandedMenu, setExpandedMenu] = useState(false);
-    const [walletBalance, setWalletBalance] = useState(0);
-
     return (
         <Fragment>
             <Navbar
@@ -45,7 +34,6 @@ const NavbarDefault = () => {
                         <Nav className="ms-3 w-100 d-flex justify-content-center gap-2">
                             {NavbarDefaultRoutes.map((item, index) => {
                                 if (item.children === undefined) {
-                                    console.log('should be good');
                                     return (
                                         <Nav.Link
                                             key={index}
@@ -75,7 +63,7 @@ const NavbarDefault = () => {
                                     padding: '0',
                                 }}
                                 className="text-primary text-nowrap">
-                                Reward Balance: {walletBalance}
+                                rMIND Balance: {balance}
                             </span>
                         </Nav>
                     </Navbar.Collapse>

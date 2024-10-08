@@ -4,17 +4,16 @@ import { ethers } from 'ethers';
 // Define the contract ABI (just the necessary functions for now)
 const MIND_ABI = [
     'function balanceOf(address owner) view returns (uint256)',
-    'function mint(address to, uint256 amount) external',
     // Add more functions here as needed
 ];
 
 // Custom hook to interact with the MIND token contract
 const useMind = (contractAddress) => {
-    const [provider, setProvider] = useState(null);
-    const [signer, setSigner] = useState(null);
     const [contract, setContract] = useState(null);
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(false);
+    const [address, setAddress] = useState(null);
+    const [balance, setBalance] = useState(null);
 
     // Initialize provider, signer, and contract when the component mounts
     useEffect(() => {
@@ -22,7 +21,7 @@ const useMind = (contractAddress) => {
             try {
                 // Check if MetaMask (or any other web3 provider) is available
                 if (window.ethereum) {
-                    // Create a provider to interact with the Ethereum network (or Rootstock in your case)
+                    // Create a provider to interact with the Ethereum network
                     const _provider = new ethers.BrowserProvider(
                         window.ethereum
                     );
@@ -33,6 +32,10 @@ const useMind = (contractAddress) => {
                     // Get the signer (the account interacting with the contract)
                     const _signer = await _provider.getSigner();
 
+                    // Get the connected wallet's address
+                    const _address = await _signer.getAddress();
+                    setAddress(_address);
+
                     // Initialize the contract
                     const _contract = new ethers.Contract(
                         contractAddress,
@@ -41,10 +44,9 @@ const useMind = (contractAddress) => {
                     );
 
                     // Set provider, signer, and contract in the state
-                    setProvider(_provider);
-                    setSigner(_signer);
                     setContract(_contract);
                 } else {
+                    setError('Ethereum wallet not found');
                     console.error('Ethereum wallet not found');
                 }
             } catch (err) {
@@ -55,28 +57,36 @@ const useMind = (contractAddress) => {
         init();
     }, [contractAddress]);
 
-    // Function to get the balance of a specific address
-    const getBalance = async (address) => {
-        try {
-            setLoading(true);
-            if (!contract) throw new Error('Contract is not initialized');
-            const balance = await contract.balanceOf(address);
-            return ethers.formatUnits(balance, 18); // Assuming 18 decimals
-        } catch (err) {
-            console.error('Error fetching balance: ', err);
-            setError(err.message);
-        } finally {
-            setLoading(false);
-        }
-    };
+    // Automatically get balance when the wallet is connected and contract is initialized
+    useEffect(() => {
+        const fetchBalance = async () => {
+            if (contract && address) {
+                try {
+                    setLoading(true);
+                    const balance = await contract.balanceOf(address);
+                    const formattedBalance = ethers
+                        .formatUnits(balance, 18)
+                        .toString();
+                    const roundedBalance =
+                        parseFloat(formattedBalance).toFixed(2);
+                    setBalance(roundedBalance);
+                } catch (err) {
+                    console.error('Error fetching balance: ', err);
+                    setError(err.message);
+                } finally {
+                    setLoading(false);
+                }
+            }
+        };
+
+        fetchBalance();
+    }, [contract, address]);
 
     return {
-        provider,
-        signer,
-        contract,
-        getBalance,
+        balance,
         error,
         loading,
+        address,
     };
 };
 

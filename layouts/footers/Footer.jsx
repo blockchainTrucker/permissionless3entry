@@ -9,7 +9,7 @@ const Footer = () => {
     return (
         <Fragment>
             <div className="pt-lg-10 pt-5 footer bg-none">
-                <Row className="justify-content-center pb-lg-10 mx-lg-10">
+                <Row className="justify-content-center mx-lg-10">
                     <Col className="text-center">
                         <div className="mt-4 mb-0 text-primary">
                             <p>

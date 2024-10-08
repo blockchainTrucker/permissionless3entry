@@ -2,9 +2,11 @@ import '../styles/theme.scss';
 import 'prettier';
 import Head from 'next/head';
 import DefaultLayout from '../layouts/DefaultLayout';
+import { MindProvider } from '../context/MindContext';
 
 function RewardingMindset({ Component, pageProps }) {
-    // Identify the layout, which will be applied conditionally
+    const MIND_TOKEN_CONTRACT_ADDRESS =
+        '0xfe1efa33372089f2741ae4b5a30c2428adc78823';
     const Layout = DefaultLayout;
     return (
         <>
@@ -16,9 +18,11 @@ function RewardingMindset({ Component, pageProps }) {
                 />
                 <base href="/" />
             </Head>
-            <Layout>
-                <Component {...pageProps} />
-            </Layout>
+            <MindProvider contractAddress={MIND_TOKEN_CONTRACT_ADDRESS}>
+                <Layout>
+                    <Component {...pageProps} />
+                </Layout>
+            </MindProvider>
         </>
     );
 }
