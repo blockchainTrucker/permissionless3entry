@@ -41,7 +41,7 @@ In today’s fast-paced digital world, mental wellness often takes a backseat. T
 To access the Rewarding Mindset platform, follow these simple steps:
 
 1. Visit the Website:  
-   Go to [https://rewardingmindset.com](https://rewardingmindset.com) to access the app.
+   Go to https://rewarding-mindset-c2f9184a831f.herokuapp.com/](https://rewarding-mindset-c2f9184a831f.herokuapp.com/) to access the app.
 
 2. Create an Account:
 
