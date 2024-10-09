@@ -6,8 +6,9 @@ import NavbarDefaultRoutes from '../../data/navbars/navbarRoutes';
 import { useMindContext } from '../../context/MindContext';
 
 const NavbarDefault = () => {
-    const { balance } = useMindContext();
+    const { balance, network } = useMindContext();
     const [expandedMenu, setExpandedMenu] = useState(false);
+    console.log(network);
     return (
         <Fragment>
             <Navbar
@@ -56,15 +57,27 @@ const NavbarDefault = () => {
                             })}
                         </Nav>
                         <Nav className="navbar-nav ms-auto me-3">
-                            <span
-                                style={{
-                                    fontSize: '1.1rem',
-                                    fontWeight: '500',
-                                    padding: '0',
-                                }}
-                                className="text-primary text-nowrap">
-                                rMIND Balance: {balance}
-                            </span>
+                            {network === 'rootstock' ? (
+                                <span
+                                    style={{
+                                        fontSize: '1.1rem',
+                                        fontWeight: '500',
+                                        padding: '0',
+                                    }}
+                                    className="text-primary text-nowrap">
+                                    rMIND Balance: {balance}
+                                </span>
+                            ) : (
+                                <span
+                                    style={{
+                                        fontSize: '1.1rem',
+                                        fontWeight: '500',
+                                        padding: '0',
+                                    }}
+                                    className="text-primary text-nowrap">
+                                    xMIND Balance: {balance}
+                                </span>
+                            )}
                         </Nav>
                     </Navbar.Collapse>
                 </Container>

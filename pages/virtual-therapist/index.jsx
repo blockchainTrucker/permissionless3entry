@@ -1,9 +1,14 @@
+import axios from 'axios';
 import Link from 'next/link';
 import { Fragment, useState, useEffect, useRef } from 'react';
-import { Button, Card, Form } from 'react-bootstrap';
+import { Card, Form, Image } from 'react-bootstrap';
 import { ReactTyped } from 'react-typed';
-
+import { useMindContext } from '../../context/MindContext';
+import { useRouter } from 'next/router';
 const VirtualTherapist = () => {
+    const router = useRouter();
+    const { network, address, setRewardModal, setRewardType, fetchBalance } =
+        useMindContext();
     const [message, setMessage] = useState(''); // For the current message being typed
     const [messages, setMessages] = useState([]); // Array to store all the messages
     const messagesContainerRef = useRef(null); // Ref to track the messages container
@@ -21,7 +26,7 @@ const VirtualTherapist = () => {
         scrollToBottom();
     }, [messages]);
 
-    const submitHandler = (e) => {
+    const submitHandler = async (e) => {
         e.preventDefault(); // Prevent form from refreshing the page
         if (message.trim()) {
             const options = {
@@ -39,21 +44,65 @@ const VirtualTherapist = () => {
                 options
             ).format(new Date());
 
-            // Add message to the messages array and clear the input
-            setMessages([
-                ...messages,
+            // Add the user's message to the messages array
+            setMessages((prevMessages) => [
+                ...prevMessages,
                 {
                     from: 'User',
                     message,
                     time: formattedDate,
                 },
             ]);
-            setMessage('');
+            setMessage(''); // Clear the input field
+
+            let first = null;
+            if (messages.length < 2) {
+                first = true;
+            }
+
+            try {
+                const res = await axios.post('/api/therapyMessage', {
+                    first,
+                    message,
+                });
+                const therapistMessage = res.data.completion;
+
+                // Add the therapist's message to the messages array
+                setMessages((prevMessages) => [
+                    ...prevMessages,
+                    {
+                        from: 'Virtual Therapist',
+                        message: therapistMessage,
+                        time: formattedDate,
+                    },
+                ]);
+            } catch (err) {
+                console.error(err);
+                // Handle any error (e.g., show an error message)
+            }
         }
     };
 
-    const endSession = () => {
-        console.log('end');
+    const endSession = async () => {
+        await axios
+            .post('/api/endSession', { messages, network, address })
+            .then((res) => {
+                console.log(res.data);
+                if (res.data.result) {
+                    if (res.data.message.includes('Minted')) {
+                        setRewardType('therapy');
+                        setRewardModal(true);
+                        fetchBalance();
+                        router.push('/');
+                    } else {
+                        router.push('/');
+                        fetchBalance();
+                    }
+                } else {
+                    router.push('/');
+                    fetchBalance();
+                }
+            });
     };
 
     return (
@@ -82,7 +131,7 @@ const VirtualTherapist = () => {
                         style={{
                             flex: '1 1 auto', // Let the body grow and fill available space
                             overflowY: 'auto', // Enable scrolling in body when content overflows
-                            padding: '10px',
+                            padding: '20px',
                         }}>
                         {/* Map over messages and display them */}
                         {messages.map((msg, index) => (
@@ -96,7 +145,7 @@ const VirtualTherapist = () => {
                                     <p>
                                         <ReactTyped
                                             strings={[msg.message]}
-                                            typeSpeed={40}
+                                            typeSpeed={5}
                                             showCursor={false}
                                         />
                                     </p>
@@ -124,17 +173,19 @@ const VirtualTherapist = () => {
                                 className="bg-gray-200"
                                 placeholder="Type your message..."
                             />
-                            <Button
-                                type="submit"
+                            <div
+                                onClick={submitHandler}
                                 style={{
                                     position: 'absolute',
                                     right: '10px',
-                                    bottom: '10px',
-                                    padding: '10px 20px',
-                                }}
-                                className="btn-primary">
-                                Send
-                            </Button>
+                                    bottom: '15px',
+                                    cursor: 'pointer',
+                                }}>
+                                <Image
+                                    height={35}
+                                    src="images/icons/snd-btn.png"
+                                />
+                            </div>
                         </Form>
                     </Card.Footer>
                 </Card>

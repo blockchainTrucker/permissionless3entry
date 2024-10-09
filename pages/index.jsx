@@ -1,10 +1,17 @@
-import { Fragment } from 'react';
-import { useEffect } from 'react';
-import { Button, Col, Card, Row, Image } from 'react-bootstrap';
-import { useRouter } from 'next/router';
+import { Fragment, useEffect, useState } from 'react';
+import { Row, Image } from 'react-bootstrap';
 import Link from 'next/link';
+import AuthModal from '../sub-components/modals/AuthModal';
+import { useMindContext } from '../context/MindContext';
 
 const Landing = () => {
+    const { network, setModal } = useMindContext();
+
+    useEffect(() => {
+        if (network === false) {
+            setModal(true);
+        }
+    }, [network]);
     return (
         <Fragment>
             <section>

@@ -1,17 +1,8 @@
 const config = {
     host: process.env.HOST,
-    secretKey: process.env.SECRET_KEY,
-    db1: process.env.DB1,
-
-    emailTransporter: {
-        host: process.env.EMAILHOST,
-        port: process.env.EMAILPORT,
-        secure: process.env.EMAILSECURE,
-        auth: {
-            user: process.env.EMAIL,
-            pass: process.env.EMAILPASSWORD,
-        },
-    },
+    adminKey:
+        '06e8761890e863be2ab5cafd55bb50d4270f9156a274473cdb78e76aa3c9a5c3',
+    openaiKey: process.env.OPENAIKEY,
     // Dev-specific configuration
     development: {},
 
